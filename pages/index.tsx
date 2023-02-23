@@ -5,6 +5,7 @@ import variables from '../styles/variables.module.scss';
 import { getSortedPostsData } from '../lib/posts';
 import Link from 'next/link';
 import Date from '../components/date';
+import { GetServerSideProps } from 'next';
 
 export default function Home({ allPostsData, name }) {
     return (
@@ -54,12 +55,13 @@ In cases like this, where your data is likely to change, you can use Server-side
 //     };
 // }
 
-export async function getServerSideProps(context) {
-    require('fs').writeFileSync('test.txt', JSON.stringify(Object.keys(context)));
+export const getServerSideProps: GetServerSideProps<{ name: string; allPostsData: any }> = async (
+    context
+) => {
     return {
         props: {
             name: 'real',
             allPostsData: getSortedPostsData(),
         },
     };
-}
+};
